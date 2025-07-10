@@ -28,7 +28,10 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+
 import { useGist } from '@/hooks/useGist';
+import { TokenDialog } from '@/components/TokenDialog';
+
 import { useSettings } from '@/hooks/useSettings';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { GistLoader } from '@/components/GistLoader';
@@ -108,7 +111,15 @@ const calculateProgress = (stats: WritingStats): number => {
   const [htmlPreview, setHtmlPreview] = useState('');
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const { settings, updateSettings, toggleTheme, toggleAutoSave } = useSettings();
-  const { loading: gistLoading, currentGist, saveToGist, updateGist } = useGist();
+  const {
+    loading: gistLoading,
+    currentGist,
+    saveToGist,
+    updateGist,
+    isTokenDialogOpen,
+    closeTokenDialog,
+    saveToken,
+  } = useGist();
   const editorRef = useRef<ReactCodeMirrorRef>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -183,7 +194,7 @@ const calculateProgress = (stats: WritingStats): number => {
 
   const handleExportHtml = async () => {
     try {
-      await exportToHtml(htmlPreview, 'Nexus Export');
+      await exportToHtml(htmlPreview, 'Advanced Export');
       toast({
         title: "✨ HTML Ready!",
         description: "Complete HTML document copied to clipboard with professional styling.",
@@ -287,6 +298,11 @@ const calculateProgress = (stats: WritingStats): number => {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+      <TokenDialog
+        isOpen={isTokenDialogOpen}
+        onClose={closeTokenDialog}
+        onSave={saveToken}
+      />
       <GistLoader onContentLoad={handleContentLoad} />
       
       {/* Enhanced Header with Gradient */}

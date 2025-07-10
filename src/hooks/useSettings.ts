@@ -19,7 +19,7 @@ export const useSettings = () => {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   useEffect(() => {
-    const saved = localStorage.getItem('nexus-editor-settings');
+    const saved = localStorage.getItem('advanced-editor-settings');
     if (saved) {
       try {
         const parsedSettings = JSON.parse(saved);
@@ -33,7 +33,7 @@ export const useSettings = () => {
   const updateSettings = (newSettings: Partial<Settings>) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
-    localStorage.setItem('nexus-editor-settings', JSON.stringify(updated));
+    localStorage.setItem('advanced-markdown-editor-settings', JSON.stringify(updated));
   };
 
   const toggleTheme = () => {

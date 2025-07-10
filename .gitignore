@@ -128,3 +128,5 @@ dist
 # Vite
 dist
 .vite
+
+public/node_modules/
